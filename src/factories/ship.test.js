@@ -1,7 +1,7 @@
 import Ship from "./ship";
 
 test('ship', () => {
-    expect(new Ship(5)).toEqual({length: 5, hits: 0, coordinates: []});
+    expect(new Ship(5)).toEqual({length: 5, hits: 0, coordinates: [], sunk: false});
 });
 
 test('not sunk', () => {

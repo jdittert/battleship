@@ -62,7 +62,7 @@ test('test row 10', () => {
 test('place new ship', () => {
     const board = new Board();
     board.buildGrid();
-    expect(board.placeShip('a1', 3)).toEqual({length: 3, hits: 0, coordinates: ['a1', 'a2', 'a3']});
+    expect(board.placeShip('a1', 3)).toEqual({length: 3, hits: 0, coordinates: ['a1', 'a2', 'a3'], sunk: false});
 });
 
 test('return off the board', () => {
@@ -75,7 +75,7 @@ test('ships array', () => {
     const board = new Board();
     board.buildGrid();
     board.placeShip('a1', 3);
-    expect(board.ships).toEqual([{length: 3, hits: 0, coordinates: ['a1', 'a2', 'a3']}]);
+    expect(board.ships).toEqual([{length: 3, hits: 0, coordinates: ['a1', 'a2', 'a3'], sunk: false}]);
 });
 
 test('vertical ship', () => {
@@ -102,5 +102,91 @@ test('vertical ship length false', () => {
 test('ver return off the board', () => {
     const board = new Board();
     board.buildGrid();
-    expect(board.placeShip('j9', 3)).toBe(null);
+    expect(board.placeShip('j9', 3, 'ver')).toBe(null);
 });
+
+test('add attack to guessed', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.receiveAttack('f4');
+    expect(board.guessed.includes('f4')).toBe(true);
+});
+
+test('add attack to guessed 2', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.receiveAttack('f4');
+    expect(board.guessed.includes('e4')).toBe(false);
+});
+
+test('add hit to ship', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('f4', 3, 'ver');
+    board.receiveAttack('f4');
+    expect(board.ships[0].hits).toBe(1);
+});
+
+test('miss ship', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('f4', 3, 'ver');
+    board.receiveAttack('f5');
+    expect(board.ships[0].hits).toBe(0);
+});
+
+test('sunk ship', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('f4', 1, 'ver');
+    board.receiveAttack('f4');
+    expect(board.ships[0].sunk).toBe(true);
+});
+
+test('not sunk ship 1', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('f4', 1, 'ver');
+    board.receiveAttack('f5');
+    expect(board.ships[0].sunk).toBe(false);
+});
+
+test('not sunk ship 2', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('f4', 3, 'ver');
+    board.receiveAttack('f4');
+    expect(board.ships[0].sunk).toBe(false);
+});
+
+test('all sunk', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('f4', 1, 'ver');
+    board.receiveAttack('f4');
+    expect(board.allSunk()).toBe(true);
+});
+
+test('all sunk false', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('f4', 1, 'ver');
+    board.receiveAttack('f5');
+    expect(board.allSunk()).toBe(false);
+})
+
+test('all sunk false multiple ships', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('f4', 1, 'ver');
+    board.placeShip('a1', 3);
+    board.receiveAttack('f4');
+    expect(board.allSunk()).toBe(false);
+});
+
+test('all sunk no ships', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.receiveAttack('f4');
+    expect(board.allSunk()).toBe(false);
+})
