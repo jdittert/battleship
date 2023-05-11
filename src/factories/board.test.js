@@ -21,42 +21,42 @@ test('ship placed', () => {
     const board = new Board();
     board.buildGrid();
     board.placeShip('a1', 3);
-    expect(board.ships.includes('a1')).toBe(true);
+    expect(board.filled.includes('a1')).toBe(true);
 });
 
 test('no ship', () => {
     const board = new Board();
     board.buildGrid()
     board.placeShip('a1', 3);
-    expect(board.ships.includes('j3')).toBe(false);
+    expect(board.filled.includes('j3')).toBe(false);
 });
 
 test('longer ship', () => {
     const board = new Board();
     board.buildGrid();
     board.placeShip('a1', 3);
-    expect(board.ships.includes('a3')).toBe(true);
+    expect(board.filled.includes('a3')).toBe(true);
 });
 
 test('longer ship 2', () => {
     const board = new Board();
     board.buildGrid();
     board.placeShip('a1', 3);
-    expect(board.ships.includes('a4')).toBe(false);
+    expect(board.filled.includes('a4')).toBe(false);
 });
 
 test('off the board', () => {
     const board = new Board();
     board.buildGrid();
     board.placeShip('a9', 3);
-    expect(board.ships.includes('a9')).toBe(false);
+    expect(board.filled.includes('a9')).toBe(false);
 });
 
 test('test row 10', () => {
     const board = new Board();
     board.buildGrid();
     board.placeShip('a10', 1);
-    expect(board.ships.includes('a10')).toBe(true);
+    expect(board.filled.includes('a10')).toBe(true);
 });
 
 test('place new ship', () => {
@@ -69,4 +69,38 @@ test('return off the board', () => {
     const board = new Board();
     board.buildGrid();    
     expect(board.placeShip('a9', 3)).toBe(null);
+});
+
+test('ships array', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('a1', 3);
+    expect(board.ships).toEqual([{length: 3, hits: 0, coordinates: ['a1', 'a2', 'a3']}]);
+});
+
+test('vertical ship', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('d1', 1, 'ver');
+    expect(board.filled.includes('d1')).toBe(true);
+});
+
+test('vertical ship length', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('d1', 3, 'ver');
+    expect(board.filled.includes('f1')).toBe(true);
+});
+
+test('vertical ship length false', () => {
+    const board = new Board();
+    board.buildGrid();
+    board.placeShip('d1', 3, 'ver');
+    expect(board.filled.includes('d2')).toBe(false);
+});
+
+test('ver return off the board', () => {
+    const board = new Board();
+    board.buildGrid();
+    expect(board.placeShip('j9', 3)).toBe(null);
 });
