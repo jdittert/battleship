@@ -1,3 +1,3 @@
-export default function jon() {
-    return ('jon');
-};
+import test from "./dom";
+
+test();

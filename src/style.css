@@ -1,0 +1,54 @@
+:root {
+    --dark-accent-color: #472183;
+    --dark-accent-color-light: #6c4d9c;
+    --dark-accent-color-dark: #391a69;
+    --header-background: #f1f6f5;
+    --light-accent-color: #82c3ec;
+    --cancel-color: #ff4242;
+    --icon-color: #4b56d2;
+    --text-color: #505050;
+    --hover-color: white;
+    --priority-1-color: #d65156;
+    --priority-2-color: #fdc945;
+    --priority-3-color: #62b740;
+    --priority-4-color: #1b9394;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    src: url('./fonts/NotoSans-Regular.ttf');
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Noto Sans';
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
+    min-height: 100vh;
+}
+
+/* Styling for header and footer */
+header, footer {
+    background-color: var(--dark-accent-color);
+    color: white;    
+    text-align: center;
+    padding: .5rem;
+}
+
+header {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+footer {
+    font-size: .75rem;
+}
+
+#main-wrapper {
+    display: flex;
+}
