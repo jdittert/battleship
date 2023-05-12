@@ -1,3 +1,3 @@
-import displayBoard from "./dom";
+import playGame from "./game-loop";
 
-displayBoard();
+playGame();

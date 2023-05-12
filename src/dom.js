@@ -1,22 +1,35 @@
 import './style.css'; 
-import Board from './factories/board';
+import Player from './factories/player';
 
-export default function displayBoard() {
+export default function displayBoard(name) {
     const main = document.getElementById('main-wrapper');
     
-    const board = new Board;
+    const player = new Player(name);
+    
+    const {board} = player;
 
     board.buildGrid();
 
-    board.placeShip('e4', 3);
-    board.placeShip('j1', 5);
-    board.placeShip('i10', 2, 'ver');
-    board.placeShip('b7', 4);
-    board.placeShip('h8', 3, 'ver');
+    player.randomShip(5);
+    player.randomShip(4);
+    player.randomShip(3);
+    player.randomShip(3);
+    player.randomShip(2);
+
+    const playerDiv = document.createElement('div');
+    playerDiv.classList.add('player-div');
+    playerDiv.setAttribute('id', `${name}`);
+    main.appendChild(playerDiv);
+
+    const displayName = document.createElement('div');
+    displayName.classList.add('player-name');
+    displayName.setAttribute('id', `${name}-name`);
+    displayName.innerText = `${name}`;
+    playerDiv.appendChild(displayName);
 
     const gameBoard = document.createElement('div');
     gameBoard.classList.add('game-board');
-    main.appendChild(gameBoard);
+    playerDiv.appendChild(gameBoard);
 
     const rowNames = document.createElement('div');
     rowNames.classList.add('row-names');

@@ -37,7 +37,6 @@ export default class Player {
         if (rDir === 0) dir = null;
         if (rDir === 1) dir = 'ver'; 
         const tryShip = this.board.placeShip(square, length, dir);
-        console.log(tryShip);
         if (tryShip === null) this.randomShip(length);
     }
 }

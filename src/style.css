@@ -51,9 +51,32 @@ footer {
 
 #main-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     padding: 2rem;
+}
+
+.player-div {
+    display: grid;
+    justify-content: center;
+    gap: 1rem;
+    box-sizing: border-box;
+}
+
+.player-name {
+    font-size: 2rem;
+    border-radius: 6px;
+    text-align: center;
+    background-color: var(--header-background);
+    box-shadow: -2px 2px 2px 2px gray;
+    padding: .5rem;
+    width: 100%;
+    height: 4rem;
+    box-sizing: border-box;
+}
+
+.active-player {
+    border: 4px solid var(--icon-color);
 }
 
 .game-board {
@@ -69,7 +92,7 @@ footer {
     width: 50px;
     display: flex;
     flex-direction: column-reverse;
-    border-left: 2px solid var(--icon-color);
+    border-left: 4px solid var(--icon-color);
 }
 
 .label {
@@ -83,15 +106,15 @@ footer {
 .column-names {
     grid-area: 2 / 2 / 3 / 3;
     background-color: var(--header-background);
-    border-bottom: 2px solid var(--icon-color);
+    border-bottom: 4px solid var(--icon-color);
     height: 50px;
     display: flex;
 }
 
 .spacer {
     background-color: var(--header-background);
-    border-bottom: 2px solid var(--icon-color);
-    border-left: 2px solid var(--icon-color);
+    border-bottom: 4px solid var(--icon-color);
+    border-left: 4px solid var(--icon-color);
     grid-area: 2 / 1 / 3 / 2;
     width: 50px;
     height: 50px;
