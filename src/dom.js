@@ -8,6 +8,12 @@ export default function displayBoard() {
 
     board.buildGrid();
 
+    board.placeShip('e4', 3);
+    board.placeShip('j1', 5);
+    board.placeShip('i10', 2, 'ver');
+    board.placeShip('b7', 4);
+    board.placeShip('h8', 3, 'ver');
+
     const gameBoard = document.createElement('div');
     gameBoard.classList.add('game-board');
     main.appendChild(gameBoard);
@@ -47,10 +53,25 @@ export default function displayBoard() {
     for (i = board.letters.length - 1; i >= 0; i--) {
         for (j = 1; j < 11; j++) {
             const square = document.createElement('div');
-            square.innerText = `${board.letters[i]}${j}`;
+            // square.innerText = `${board.letters[i]}${j}`;
             square.classList.add('board-square');
             square.setAttribute('data-coordinates', `${board.letters[i]}${j}`);
+            // if (board.filled.includes(square.dataset.coordinates)) square.classList.add('ship-square');
+            square.addEventListener('click', changeColor);
             gridDiv.appendChild(square);
         }
     };
+    
+    function changeColor(event) {
+        const x = event.target;
+        const guess = x.dataset.coordinates;        
+        board.receiveAttack(guess);        
+        if (board.filled.includes(guess)) {
+            event.target.classList.add('hit-square');
+        } else {
+            event.target.classList.add('miss-square');
+        };
+    }
 };
+
+

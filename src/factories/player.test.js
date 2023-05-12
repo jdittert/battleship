@@ -44,3 +44,11 @@ test('computer attack', () => {
     expect(human.board.guessed.includes(move)).toBe(true);
     expect(computer.myGuesses.includes(move)).toBe(true);
 });
+
+test('generate random ship', () => {
+    const computer = new Player('Computer');
+    computer.board.buildGrid();
+    const random = computer.randomShip(3);
+    computer.board.placeShip(random);
+    expect(computer.board.ships.length).toBe(1);
+});
