@@ -1,3 +1,3 @@
-import test from "./dom";
+import displayBoard from "./dom";
 
-test();
+displayBoard();
