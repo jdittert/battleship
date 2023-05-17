@@ -148,3 +148,8 @@ footer {
 .miss-square {
     background-color: var(--light-accent-color);
 }
+
+.last-guess {
+    display: flex;
+    gap: 10px;
+}

@@ -1,7 +1,8 @@
 import Player from "./factories/player";
-import displayBoard from "./dom";
+import Dom from "./dom";
 
 export default function playGame() {
+    const dom = Dom();
 
     const human = new Player('Human');
 
@@ -11,23 +12,48 @@ export default function playGame() {
 
     let currentTurn = players[0];
 
-    displayBoard(human.name);
+    dom.displayBoard(human);
 
-    displayBoard(computer.name);
+    dom.displayBoard(computer);
 
     const humanName = document.getElementById(`${human.name}-name`);
     const compName = document.getElementById(`${computer.name}-name`);
 
     humanName.classList.add('active-player');
 
-    const main = document.getElementById('main-wrapper');
+    const compDiv = document.getElementById(`${computer.name}`);
+    const compSquares = compDiv.querySelectorAll('.board-square');
+    compSquares.forEach((square) => square.addEventListener('click', toggleActive));
 
-    main.addEventListener('click', toggleActive);
-
+    // Switch between turns - setTimeout used to give the impression the computer is 'thinking'
     function toggleActive() {
-        currentTurn = currentTurn === players[0] ? players[1] : players[0];
-        humanName.classList.toggle('active-player');
-        compName.classList.toggle('active-player');
-    }
+        if (human.board.allSunk() === false && computer.board.allSunk() === false) {
+            currentTurn = currentTurn === players[0] ? players[1] : players[0];
+            humanName.classList.toggle('active-player');
+            compName.classList.toggle('active-player');
+
+            if (currentTurn === players[1]) {
+                setTimeout(() => {
+                let guess = computer.generateAttack();
+                while (guess === null) {
+                    guess = computer.generateAttack();
+                }            
+                if (guess) {
+                    human.board.receiveAttack(guess);
+                    dom.changeColor(human, guess);
+                    const guessDiv = compDiv.querySelector('[data-player="Computer"]');
+                    guessDiv.innerText = `${guess}`;
+                    toggleActive();
+                }
+                }, 300);
+            }         
+        } else {
+            compSquares.forEach((square) => square.removeEventListener('click', toggleActive));
+            compSquares.forEach((square) => square.removeEventListener('click', dom.humanAttack));
+            if (human.board.allSunk() === true) compName.innerText = 'COMPUTER WINS!';
+            if (computer.board.allSunk() === true) humanName.innerText = 'YOU WIN!';
+        }
+
+    };   
 
 };

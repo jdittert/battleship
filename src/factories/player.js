@@ -4,6 +4,8 @@ export default class Player {
     constructor(playerName) {
         this.name = playerName;
         this.board = new Board();
+        this.board.buildGrid();
+        this.computerShips();
     };
 
     // Keep track of this player's guesses
@@ -14,7 +16,7 @@ export default class Player {
         let guess = '';
         const letIndex = Math.floor(Math.random() * 10);
         const letter = this.board.letters[letIndex];
-        const num = Math.floor(Math.random() * 9 + 1);
+        const num = Math.floor(Math.random() * 10 + 1);
         guess = `${letter}${num}`;
         return guess;
     }
@@ -25,9 +27,16 @@ export default class Player {
         if (!this.myGuesses.includes(guess)) {
             this.myGuesses.push(guess);
             return guess;
-        }
-        this.generateAttack();        
-    };
+        };
+        return null; 
+    };           
+    
+
+    // humanAttack() {
+    //     const x = this.event.target;
+    //     const guess = x.dataset.coordinates;        
+    //     this.board.receiveAttack(guess);
+    // };
 
     // Generate a random ship and place it on the board
     randomShip(length) {
@@ -38,5 +47,18 @@ export default class Player {
         if (rDir === 1) dir = 'ver'; 
         const tryShip = this.board.placeShip(square, length, dir);
         if (tryShip === null) this.randomShip(length);
+    }
+
+    // Generate random ships for computer
+    computerShips() {
+        if (this.name === 'Computer' || this.name === 'Human') {
+            this.randomShip(5);
+            this.randomShip(4);
+            this.randomShip(3);
+            this.randomShip(3);
+            this.randomShip(2);
+        } else {
+            return; 
+        };
     }
 }

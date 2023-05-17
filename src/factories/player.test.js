@@ -46,9 +46,19 @@ test('computer attack', () => {
 });
 
 test('generate random ship', () => {
-    const computer = new Player('Computer');
-    computer.board.buildGrid();
+    const computer = new Player('Human');
     const random = computer.randomShip(3);
     computer.board.placeShip(random);
     expect(computer.board.ships.length).toBe(1);
 });
+
+test('generate random ship 2', () => {
+    const computer = new Player('Human');
+    computer.randomShip(3);
+    expect(computer.board.ships.length).toBe(1);
+});
+
+test('auto generate computer ships', () => {
+    const computer = new Player('Computer');
+    expect(computer.board.ships.length).toBe(5);
+})
