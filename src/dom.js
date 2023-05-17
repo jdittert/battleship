@@ -3,8 +3,9 @@ import Player from './factories/player';
 
 export default function Dom() {
 
-    const displayBoard = (Player) => {
-        const main = document.getElementById('main-wrapper');
+    const main = document.getElementById('main-wrapper');
+
+    const displayBoard = (Player) => {        
 
         const {board} = Player; 
 
@@ -86,6 +87,7 @@ export default function Dom() {
             const guessDiv = document.getElementById('Human');
             const humanGuess = guessDiv.querySelector('[data-player="Human"]');
             humanGuess.innerText = `${guess}`;
+            updateShips(Player);
             if (Player.board.allSunk() === true) {
                 const squares = document.querySelectorAll('.board-square');
                 squares.forEach((square) => square.removeEventListener('click', humanAttack))
@@ -104,6 +106,63 @@ export default function Dom() {
         };
     };
 
-    return { displayBoard, changeColor }
+    const displayInfo = () => {
+        const infoDiv = document.createElement('div');
+        infoDiv.classList.add('info-div');
+        main.appendChild(infoDiv);
+
+        const infoTitle = document.createElement('div');
+        infoTitle.classList.add('player-name');
+        infoTitle.innerText = 'Info';
+        infoDiv.appendChild(infoTitle);
+
+        const remainingShips = document.createElement('div');
+        infoDiv.appendChild(remainingShips);
+
+        const yourShipsDiv = document.createElement('div');
+        yourShipsDiv.classList.add('remaining');
+        remainingShips.appendChild(yourShipsDiv);
+
+        const yourRemaining = document.createElement('div');
+        yourRemaining.innerText = 'Your remaining ships: ';
+        yourShipsDiv.appendChild(yourRemaining);
+        const yourNumber = document.createElement('div');
+        yourNumber.innerText = 'X';
+        yourNumber.setAttribute('id', 'Human-ships');
+        yourShipsDiv.appendChild(yourNumber);
+
+        const compShipsDiv = document.createElement('div');
+        compShipsDiv.classList.add('remaining');
+        remainingShips.appendChild(compShipsDiv);
+
+        const compRemaining = document.createElement('div');
+        compRemaining.innerText = 'Computer\'s remaining ships: '
+        compShipsDiv.appendChild(compRemaining);
+        const compNumber = document.createElement('div');
+        compNumber.innerText = 'X';
+        compNumber.setAttribute('id', 'Computer-ships');
+        compShipsDiv.appendChild(compNumber);
+
+        const resetDiv = document.createElement('div');
+        infoDiv.appendChild(resetDiv);
+
+        const resetButton = document.createElement('button');
+        resetButton.classList.add('reset');
+        resetButton.setAttribute('id', 'reset-button');
+        resetDiv.appendChild(resetButton);
+        resetButton.innerText = 'Reset Game';
+    };
+
+    const updateShips = (Player) => {
+        const update = document.getElementById(`${Player.name}-ships`);
+        let unsunk = Player.board.ships.length;
+        Player.board.ships.forEach((ship) => {
+            if (ship.isSunk() === true)
+            unsunk -= 1;
+        });
+        update.innerText = unsunk;
+    }
+
+    return { displayBoard, changeColor, displayInfo, updateShips }
 };
 

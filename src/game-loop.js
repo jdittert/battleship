@@ -2,6 +2,8 @@ import Player from "./factories/player";
 import Dom from "./dom";
 
 export default function playGame() {
+    document.getElementById('main-wrapper').innerText = '';
+    
     const dom = Dom();
 
     const human = new Player('Human');
@@ -14,7 +16,14 @@ export default function playGame() {
 
     dom.displayBoard(human);
 
+    dom.displayInfo();
+
     dom.displayBoard(computer);
+
+    dom.updateShips(human);
+    dom.updateShips(computer);
+
+    document.getElementById('reset-button').addEventListener('click', playGame);
 
     const humanName = document.getElementById(`${human.name}-name`);
     const compName = document.getElementById(`${computer.name}-name`);
@@ -43,6 +52,7 @@ export default function playGame() {
                     dom.changeColor(human, guess);
                     const guessDiv = compDiv.querySelector('[data-player="Computer"]');
                     guessDiv.innerText = `${guess}`;
+                    dom.updateShips(human);
                     toggleActive();
                 }
                 }, 300);
