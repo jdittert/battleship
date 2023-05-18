@@ -137,6 +137,15 @@ footer {
     align-items: center;
 }
 
+.filled {
+    background-color: var(--dark-accent-color);
+    border: 1px solid var(--header-background);
+}
+
+.drag-over {
+    background-color: var(--dark-accent-color-light);
+}
+
 .ship-square {
     background-color: var(--icon-color);
 }
@@ -180,4 +189,38 @@ footer {
     padding: .5rem;
     font-family: 'Noto Sans';
     color: white;
+}
+
+.ship {
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: var(--dark-accent-color);
+    color: white;
+}
+
+.carrier {
+    width: 250px;    
+}
+
+.battleship {
+    width: 200px;
+}
+
+.destroyer {
+    width: 150px;
+}
+
+.submarine {
+    width: 150px;
+}
+
+.patrolboat {
+    width: 100px;
+}
+
+.hide {
+    display: none;
 }

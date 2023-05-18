@@ -62,6 +62,12 @@ export default function Dom() {
                 square.classList.add('board-square');
                 square.setAttribute('data-coordinates', `${board.letters[i]}${j}`);
                 if (Player.name === 'Computer') square.addEventListener('click', humanAttack);
+                if (Player.name === 'Human') {
+                    square.addEventListener('dragenter', dragEnter);
+                    square.addEventListener('dragover', dragOver);
+                    square.addEventListener('dragleave', dragLeave);
+                    square.addEventListener('drop', drop);
+                }
                 gridDiv.appendChild(square);
             }
         };
@@ -92,7 +98,43 @@ export default function Dom() {
                 const squares = document.querySelectorAll('.board-square');
                 squares.forEach((square) => square.removeEventListener('click', humanAttack))
             }
-        };       
+        };
+        
+        function dragEnter(event) {
+            event.preventDefault();
+            event.target.classList.add('drag-over');
+        }
+
+        function dragOver(event) {
+            event.preventDefault();
+            event.target.classList.add('drag-over');
+        };
+
+        function dragLeave(event) {
+            event.preventDefault();
+            event.target.classList.remove('drag-over');
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            event.target.classList.remove('drag-over');
+            const length = event.dataTransfer.getData('text2');
+            const {coordinates} = event.target.dataset;            
+            const placed = Player.board.placeShip(coordinates, +length)
+            
+            if (placed === null) {
+            const id = event.dataTransfer.getData('text/plain');
+            const dragged = document.getElementById(id);
+            dragged.classList.remove('hide');
+            } else {
+            const humanBoard = document.getElementById('Human');
+            const squares = humanBoard.querySelectorAll('.board-square');
+            squares.forEach((square) => {
+                const checkSquare = square.dataset.coordinates;
+                if (Player.board.filled.includes(checkSquare)) square.classList.add('filled');
+            });
+            }
+        }
         
     }
 
@@ -109,6 +151,7 @@ export default function Dom() {
     const displayInfo = () => {
         const infoDiv = document.createElement('div');
         infoDiv.classList.add('info-div');
+        infoDiv.setAttribute('id', 'info-div');
         main.appendChild(infoDiv);
 
         const infoTitle = document.createElement('div');
@@ -117,6 +160,8 @@ export default function Dom() {
         infoDiv.appendChild(infoTitle);
 
         const remainingShips = document.createElement('div');
+        remainingShips.classList.add('hide');
+        remainingShips.setAttribute('id', 'remaining-ships');
         infoDiv.appendChild(remainingShips);
 
         const yourShipsDiv = document.createElement('div');
@@ -144,14 +189,40 @@ export default function Dom() {
         compShipsDiv.appendChild(compNumber);
 
         const resetDiv = document.createElement('div');
+        resetDiv.setAttribute('id', 'reset-div');
         infoDiv.appendChild(resetDiv);
+        resetDiv.classList.add('hide')
 
         const resetButton = document.createElement('button');
         resetButton.classList.add('reset');
         resetButton.setAttribute('id', 'reset-button');
         resetDiv.appendChild(resetButton);
         resetButton.innerText = 'Reset Game';
+        
     };
+
+    const startingInfo = () => {
+        const infoDiv = document.getElementById('info-div');
+
+        const instructionsDiv = document.createElement('div');
+        instructionsDiv.setAttribute('id', 'instructions');
+        infoDiv.appendChild(instructionsDiv);
+        instructionsDiv.classList.add('remaining');
+
+        const instructions = document.createElement('div');
+        instructions.innerText = 'Drag the ships onto your board.'
+        instructionsDiv.appendChild(instructions);
+        instructions.classList.add('remaining');
+
+        const startDiv = document.createElement('div');
+        instructionsDiv.appendChild(startDiv);
+
+        const startButton = document.createElement('button');
+        startButton.classList.add('reset')
+        startButton.setAttribute('id', 'start-button');
+        startButton.innerText = 'Start Game';
+        startDiv.appendChild(startButton);
+    }
 
     const updateShips = (Player) => {
         const update = document.getElementById(`${Player.name}-ships`);
@@ -163,6 +234,62 @@ export default function Dom() {
         update.innerText = unsunk;
     }
 
-    return { displayBoard, changeColor, displayInfo, updateShips }
+    const setShips = () => {
+        const ships = [{length: 5, name: 'carrier'}, 
+        {length: 4, name: 'battleship'},
+        {length: 3, name: 'destroyer'},
+        {length: 3, name: 'submarine'},
+        {length: 2, name: 'patrolboat'}];
+        
+        const info = document.getElementById('info-div');
+
+        ships.forEach((ship) => {
+            const newShip = createShip(ship.length, ship.name);
+            info.appendChild(newShip);
+        });
+
+        function dragStart(event) {
+            event.dataTransfer.setData('text/plain', event.target.id);
+            console.log(event.target);
+            const {length} = event.target.dataset;
+            event.dataTransfer.setData('text2', length);
+            setTimeout(() => {
+                event.target.classList.add('hide');
+            }, 0);            
+        }
+
+        function createShip(length, name) {
+            const d = document.createElement('div');
+            d.classList.add('ship', `${name}`);
+            d.setAttribute('id', `${name}`);
+            d.innerText = length;
+            d.draggable = true;
+            d.setAttribute('data-length', length);
+            d.addEventListener('dragstart', dragStart);
+            return d;
+        }
+    }
+
+    const colorShips = (Player) => {
+        const humanBoard = document.getElementById('Human');
+        const squares = humanBoard.querySelectorAll('.board-square');
+        squares.forEach((square) => {
+            const checkSquare = square.dataset.coordinates;
+            if (Player.board.filled.includes(checkSquare)) square.classList.add('filled');
+        });
+    };
+
+    const startGame = (Player) => {
+        if (Player.board.ships.length === 5) {
+            const startInfo = document.getElementById('instructions');
+            const remainingShips = document.getElementById('remaining-ships');
+            const resetDiv = document.getElementById('reset-div');
+            startInfo.classList.toggle('hide');
+            remainingShips.classList.toggle('hide');
+            resetDiv.classList.toggle('hide');
+        };        
+    }
+
+    return { displayBoard, changeColor, displayInfo, updateShips, setShips, colorShips, startingInfo, startGame }
 };
 

@@ -32,12 +32,6 @@ export default class Player {
     };           
     
 
-    // humanAttack() {
-    //     const x = this.event.target;
-    //     const guess = x.dataset.coordinates;        
-    //     this.board.receiveAttack(guess);
-    // };
-
     // Generate a random ship and place it on the board
     randomShip(length) {
         const square = this.randomSquare();
@@ -51,7 +45,7 @@ export default class Player {
 
     // Generate random ships for computer
     computerShips() {
-        if (this.name === 'Computer' || this.name === 'Human') {
+        if (this.name === 'Computer') {
             this.randomShip(5);
             this.randomShip(4);
             this.randomShip(3);

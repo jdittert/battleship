@@ -15,8 +15,14 @@ export default function playGame() {
     let currentTurn = players[0];
 
     dom.displayBoard(human);
+    dom.colorShips(human);
 
     dom.displayInfo();
+    dom.startingInfo();
+
+    document.getElementById('start-button').addEventListener('click', () => {dom.startGame(human)});
+
+    dom.setShips();
 
     dom.displayBoard(computer);
 
