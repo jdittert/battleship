@@ -180,6 +180,15 @@ footer {
     margin-bottom: 1rem;
 }
 
+button {
+    border-radius: 6px;
+    text-align: center;
+    background-color: var(--icon-color);
+    box-shadow: -2px 2px 2px 2px gray;
+    padding: .5rem;
+    font-family: 'Noto Sans';
+    color: white;
+}
 .reset {
     font-size: 1.5rem;
     border-radius: 6px;
@@ -191,34 +200,92 @@ footer {
     color: white;
 }
 
+.buttons-div {
+    padding: .5rem;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 1rem;
+}
+
+.small-button {
+    font-size: 1rem;
+}
+
+.ships-div {
+    gap: 10px;
+    padding: .25rem;
+}
+
+.ships-hor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ships-ver {
+    display: flex;
+    justify-content: center;
+}
+
 .ship {
     font-size: 1.5rem;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 50px;
+    align-items: center;    
     background-color: var(--dark-accent-color);
     color: white;
 }
 
-.carrier {
+.horizontal {
+    height: 50px;
+}
+
+.vertical {
+    width: 50px;
+}
+
+.carrier-hor {
     width: 250px;    
 }
 
-.battleship {
+.carrier-ver {
+    height: 250px;
+}
+
+.battleship-hor {
     width: 200px;
 }
 
-.destroyer {
+.battleship-ver {
+    height: 200px;
+}
+
+.destroyer-hor {
     width: 150px;
 }
 
-.submarine {
+.destroyer-ver {
+    height: 150px;
+}
+
+.submarine-hor {
     width: 150px;
 }
 
-.patrolboat {
+.submarine-ver {
+    height: 150px;
+}
+
+.patrolboat-hor {
     width: 100px;
+}
+
+.patrolboat-ver {
+    height: 100px;
+}
+
+.rotate {
+    transform: rotate(-90deg);
 }
 
 .hide {

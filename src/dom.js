@@ -119,8 +119,9 @@ export default function Dom() {
             event.preventDefault();
             event.target.classList.remove('drag-over');
             const length = event.dataTransfer.getData('text2');
+            const direction = event.dataTransfer.getData('dir');
             const {coordinates} = event.target.dataset;            
-            const placed = Player.board.placeShip(coordinates, +length)
+            const placed = Player.board.placeShip(coordinates, +length, direction);
             
             if (placed === null) {
             const id = event.dataTransfer.getData('text/plain');
@@ -133,6 +134,9 @@ export default function Dom() {
                 const checkSquare = square.dataset.coordinates;
                 if (Player.board.filled.includes(checkSquare)) square.classList.add('filled');
             });
+            const id = event.dataTransfer.getData('text/plain');
+            const dragged = document.getElementById(id);
+            dragged.classList.add('hide');
             }
         }
         
@@ -197,8 +201,7 @@ export default function Dom() {
         resetButton.classList.add('reset');
         resetButton.setAttribute('id', 'reset-button');
         resetDiv.appendChild(resetButton);
-        resetButton.innerText = 'Reset Game';
-        
+        resetButton.innerText = 'Reset Game';      
     };
 
     const startingInfo = () => {
@@ -222,6 +225,23 @@ export default function Dom() {
         startButton.setAttribute('id', 'start-button');
         startButton.innerText = 'Start Game';
         startDiv.appendChild(startButton);
+
+        const buttonsDiv = document.createElement('div');
+        buttonsDiv.classList.add('buttons-div');
+        buttonsDiv.setAttribute('id', 'buttons-div');
+        instructionsDiv.appendChild(buttonsDiv);
+
+        const rotateButton = document.createElement('button');
+        rotateButton.classList.add('small-button');
+        rotateButton.setAttribute('id', 'rotate-ships');
+        rotateButton.innerText = 'Rotate Ships';
+        buttonsDiv.appendChild(rotateButton);
+
+        const resetShipsButton = document.createElement('button');
+        resetShipsButton.classList.add('small-button');
+        resetShipsButton.setAttribute('id', 'reset-ships');
+        resetShipsButton.innerText = 'Reset Ships';
+        buttonsDiv.appendChild(resetShipsButton);
     }
 
     const updateShips = (Player) => {
@@ -242,26 +262,30 @@ export default function Dom() {
         {length: 2, name: 'patrolboat'}];
         
         const info = document.getElementById('info-div');
+          
+        const shipsDiv = document.createElement('div');
+        shipsDiv.setAttribute('id', 'ships-div');
+        shipsDiv.classList.add('ships-div', 'ships-hor');
+        info.appendChild(shipsDiv);
 
         ships.forEach((ship) => {
             const newShip = createShip(ship.length, ship.name);
-            info.appendChild(newShip);
+            shipsDiv.appendChild(newShip);
         });
 
         function dragStart(event) {
             event.dataTransfer.setData('text/plain', event.target.id);
-            console.log(event.target);
             const {length} = event.target.dataset;
             event.dataTransfer.setData('text2', length);
-            setTimeout(() => {
-                event.target.classList.add('hide');
-            }, 0);            
+            const {direction} = event.target.dataset
+            event.dataTransfer.setData('dir', direction);      
         }
 
         function createShip(length, name) {
             const d = document.createElement('div');
-            d.classList.add('ship', `${name}`);
+            d.classList.add('ship', `${name}-hor`, 'horizontal');
             d.setAttribute('id', `${name}`);
+            d.setAttribute('data-direction', 'hor');
             d.innerText = length;
             d.draggable = true;
             d.setAttribute('data-length', length);
@@ -290,6 +314,24 @@ export default function Dom() {
         };        
     }
 
-    return { displayBoard, changeColor, displayInfo, updateShips, setShips, colorShips, startingInfo, startGame }
+    const rotateShips = () => {
+        const shipsDiv = document.getElementById('ships-div');
+        // shipsDiv.classList.toggle('rotate');
+        const ships = shipsDiv.querySelectorAll('.ship');
+        shipsDiv.classList.toggle('ships-hor');
+        shipsDiv.classList.toggle('ships-ver');
+        ships.forEach((ship) => {
+            const {id} = ship;
+            ship.classList.toggle(`${id}-hor`);
+            ship.classList.toggle('horizontal');
+            ship.classList.toggle('vertical');
+            ship.classList.toggle(`${id}-ver`);
+            const dir = ship.getAttribute('data-direction');
+            if (dir === 'hor') ship.setAttribute('data-direction', 'ver');
+            if (dir === 'ver') ship.setAttribute('data-direction', 'hor');
+        });
+    };
+
+    return { displayBoard, changeColor, displayInfo, updateShips, setShips, colorShips, startingInfo, startGame, rotateShips }
 };
 

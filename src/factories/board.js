@@ -47,7 +47,7 @@ export default class Board {
                     let i;
                     for (i = 1; i < length; i++) {
                         const letIndex = this.letters.indexOf(letter);
-                        const ext = `${this.letters[letIndex + i]}${num}`;
+                        const ext = `${this.letters[letIndex - i]}${num}`;
                         if (this.squares.includes(ext) && !this.filled.includes(ext)) {
                             shipTest.push(ext);
                         };
@@ -56,7 +56,7 @@ export default class Board {
             };
 
             // Horizontal ship placements (default)
-            if (dir !== 'ver') {
+            if (dir === 'hor') {
                 if (this.squares.includes(square) && !this.filled.includes(square)) {
                     shipTest.push(square);
                     let i;

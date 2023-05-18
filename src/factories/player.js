@@ -37,7 +37,7 @@ export default class Player {
         const square = this.randomSquare();
         const rDir = Math.floor(Math.random() * 2);
         let dir;
-        if (rDir === 0) dir = null;
+        if (rDir === 0) dir = 'hor';
         if (rDir === 1) dir = 'ver'; 
         const tryShip = this.board.placeShip(square, length, dir);
         if (tryShip === null) this.randomShip(length);

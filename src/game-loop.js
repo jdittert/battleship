@@ -21,15 +21,19 @@ export default function playGame() {
     dom.startingInfo();
 
     document.getElementById('start-button').addEventListener('click', () => {dom.startGame(human)});
+    document.getElementById('start-button').addEventListener('click', () => {dom.updateShips(human)});
+    document.getElementById('start-button').addEventListener('click', () => {dom.updateShips(computer)});
 
     dom.setShips();
 
     dom.displayBoard(computer);
 
-    dom.updateShips(human);
-    dom.updateShips(computer);
+    
+    
 
     document.getElementById('reset-button').addEventListener('click', playGame);
+    document.getElementById('rotate-ships').addEventListener('click', dom.rotateShips);
+    document.getElementById('reset-ships').addEventListener('click', playGame);
 
     const humanName = document.getElementById(`${human.name}-name`);
     const compName = document.getElementById(`${computer.name}-name`);
