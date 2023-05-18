@@ -21,7 +21,7 @@ export default class Player {
         return guess;
     }
     
-    // that has not already been guessed (for computer turn)
+    // Guess a square that has not already been guessed (for computer turn)
     generateAttack() {
         const guess = this.randomSquare();
         if (!this.myGuesses.includes(guess)) {

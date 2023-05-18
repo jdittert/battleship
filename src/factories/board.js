@@ -88,10 +88,6 @@ export default class Board {
         // Square exists and has not been guessed
         if (square && this.squares.includes(square) && !this.guessed.includes(square)) {
             this.guessed.push(square);
-            
-
-            // Change color
-
 
             // Square is a hit
             if (this.filled.includes(square)) {

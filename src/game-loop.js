@@ -6,6 +6,7 @@ export default function playGame() {
     
     const dom = Dom();
 
+    // Set up the two players
     const human = new Player('Human');
 
     const computer = new Player('Computer');
@@ -14,27 +15,28 @@ export default function playGame() {
 
     let currentTurn = players[0];
 
+    // Display initial boards
     dom.displayBoard(human);
     dom.colorShips(human);
 
     dom.displayInfo();
     dom.startingInfo();
 
+    // Event listeners for start game
     document.getElementById('start-button').addEventListener('click', () => {dom.startGame(human)});
     document.getElementById('start-button').addEventListener('click', () => {dom.updateShips(human)});
     document.getElementById('start-button').addEventListener('click', () => {dom.updateShips(computer)});
 
     dom.setShips();
 
-    dom.displayBoard(computer);
-
+    dom.displayBoard(computer);    
     
-    
-
+    // Event listeners for setting up ship buttons
     document.getElementById('reset-button').addEventListener('click', playGame);
     document.getElementById('rotate-ships').addEventListener('click', dom.rotateShips);
     document.getElementById('reset-ships').addEventListener('click', playGame);
 
+    // Display player names
     const humanName = document.getElementById(`${human.name}-name`);
     const compName = document.getElementById(`${computer.name}-name`);
 

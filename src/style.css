@@ -49,6 +49,7 @@ footer {
     font-size: .75rem;
 }
 
+/* Styling for main div */
 #main-wrapper {
     display: flex;
     justify-content: space-around;
@@ -79,6 +80,7 @@ footer {
     border: 4px solid var(--icon-color);
 }
 
+/* Game board styling */
 .game-board {
     display: grid;
     grid-template-columns: repeat(2, auto);
@@ -128,6 +130,7 @@ footer {
     grid-area: 1 / 2 / 2 / 3;
 }
 
+/* Game square styling */
 .board-square {
     width: 50px;
     height: 50px;
@@ -163,6 +166,7 @@ footer {
     gap: 10px;
 }
 
+/* Middle div styling */
 .info-div {
     display: flex;
     flex-direction: column;
@@ -227,6 +231,7 @@ button {
     justify-content: center;
 }
 
+/* Create each draggable ship */
 .ship {
     font-size: 1.5rem;
     display: flex;
@@ -284,10 +289,7 @@ button {
     height: 100px;
 }
 
-.rotate {
-    transform: rotate(-90deg);
-}
-
+/* Hide unwanted elements */
 .hide {
     display: none;
 }

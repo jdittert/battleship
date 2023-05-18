@@ -1,14 +1,15 @@
-import './style.css'; 
-import Player from './factories/player';
+import './style.css';
 
 export default function Dom() {
 
     const main = document.getElementById('main-wrapper');
 
+    // Display a board with the player's name
     const displayBoard = (Player) => {        
 
         const {board} = Player; 
 
+        // Player name
         const playerDiv = document.createElement('div');
         playerDiv.classList.add('player-div');
         playerDiv.setAttribute('id', `${Player.name}`);
@@ -20,6 +21,7 @@ export default function Dom() {
         displayName.innerText = `${Player.name}`;
         playerDiv.appendChild(displayName);
 
+        // Player board
         const gameBoard = document.createElement('div');
         gameBoard.classList.add('game-board');
         playerDiv.appendChild(gameBoard);
@@ -50,6 +52,7 @@ export default function Dom() {
         spacer.classList.add('spacer');
         gameBoard.appendChild(spacer);
         
+        // Create acutal game squares
         const gridDiv = document.createElement('div');
         gridDiv.classList.add('game-grid');
         gameBoard.appendChild(gridDiv);
@@ -72,6 +75,7 @@ export default function Dom() {
             }
         };
 
+        // Last guess info placed below the game boards
         const lastGuess = document.createElement('div');
         lastGuess.classList.add('last-guess');    
         playerDiv.appendChild(lastGuess);
@@ -85,6 +89,7 @@ export default function Dom() {
         guessSquare.innerText = '';
         lastGuess.appendChild(guessSquare);
         
+        // Allow human to guess a square by clicking it
         function humanAttack(event) {
             const x = event.target;
             const guess = x.dataset.coordinates;        
@@ -100,6 +105,7 @@ export default function Dom() {
             }
         };
         
+        // Drag functions for setting up ships
         function dragEnter(event) {
             event.preventDefault();
             event.target.classList.add('drag-over');
@@ -142,6 +148,7 @@ export default function Dom() {
         
     }
 
+    // Updates the color of a square based on hit or miss
     const changeColor = (Player, square) => {
         const activeBoard = document.getElementById(`${Player.name}`);
         const activeSquare = activeBoard.querySelector(`[data-coordinates='${square}']`);
@@ -152,6 +159,7 @@ export default function Dom() {
         };
     };
 
+    // Display the game info inbetween boards
     const displayInfo = () => {
         const infoDiv = document.createElement('div');
         infoDiv.classList.add('info-div');
@@ -204,6 +212,7 @@ export default function Dom() {
         resetButton.innerText = 'Reset Game';      
     };
 
+    // Display information at the start of the game (replaced later by game info)
     const startingInfo = () => {
         const infoDiv = document.getElementById('info-div');
 
@@ -244,6 +253,7 @@ export default function Dom() {
         buttonsDiv.appendChild(resetShipsButton);
     }
 
+    // Update the number of remaining ships 
     const updateShips = (Player) => {
         const update = document.getElementById(`${Player.name}-ships`);
         let unsunk = Player.board.ships.length;
@@ -254,6 +264,7 @@ export default function Dom() {
         update.innerText = unsunk;
     }
 
+    // Create draggable ships
     const setShips = () => {
         const ships = [{length: 5, name: 'carrier'}, 
         {length: 4, name: 'battleship'},
@@ -281,6 +292,7 @@ export default function Dom() {
             event.dataTransfer.setData('dir', direction);      
         }
 
+        // Ship creation function
         function createShip(length, name) {
             const d = document.createElement('div');
             d.classList.add('ship', `${name}-hor`, 'horizontal');
@@ -294,6 +306,7 @@ export default function Dom() {
         }
     }
 
+    // Color in square where the human placed ships
     const colorShips = (Player) => {
         const humanBoard = document.getElementById('Human');
         const squares = humanBoard.querySelectorAll('.board-square');
@@ -303,6 +316,7 @@ export default function Dom() {
         });
     };
 
+    // Allow the game to start and switch the middle info div
     const startGame = (Player) => {
         if (Player.board.ships.length === 5) {
             const startInfo = document.getElementById('instructions');
@@ -314,6 +328,7 @@ export default function Dom() {
         };        
     }
 
+    // Allow human to place vertical ships
     const rotateShips = () => {
         const shipsDiv = document.getElementById('ships-div');
         // shipsDiv.classList.toggle('rotate');
